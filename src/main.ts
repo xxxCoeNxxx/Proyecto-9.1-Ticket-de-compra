@@ -1,3 +1,7 @@
 import "./style.css";
+import { productos } from "./modelo/model";
+import { calculaTicket } from "./motor/motor";
 
-console.log("Hello Typescript!");
+document.addEventListener("DOMContentLoaded", () => {
+    calculaTicket(productos);
+});

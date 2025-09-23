@@ -1,22 +1,26 @@
-export type TipoIva =
-  | "general"
-  | "reducido"
-  | "superreducidoA"
-  | "superreducidoB"
-  | "superreducidoC"
-  | "sinIva";
 
+export type TipoIva =
+| "general"
+| "reducido"
+| "superreducidoA"
+| "superreducidoB"
+| "superreducidoC"
+| "sinIva";
+
+// Interfaz general
 export interface Producto {
   nombre: string;
   precio: number;
   tipoIva: TipoIva;
 };
 
+// Interfaz para las líneas del ticket
 export interface LineaTicket {
   producto: Producto;
   cantidad: number;
 };
 
+// Por cada producto se mostrarán estos datos
 export interface ResultadoLineaTicket {
   nombre: string;
   cantidad: number;
@@ -25,23 +29,25 @@ export interface ResultadoLineaTicket {
   precioConIva: number;
 };
 
-export interface ResultadoTotalTicket {
+// Totales del ticket
+interface ResultadoTotalTicket {
   totalSinIva: number;
   totalConIva: number;
   totalIva: number;
-}
+};
 
-export interface TotalPorTipoIva {
+interface TotalPorTipoIva {
   tipoIva: TipoIva;
   cuantia : number;
-}
+};
 
 export interface TicketFinal {
   lineas: ResultadoLineaTicket[];
   total: ResultadoTotalTicket;
   desgloseIva: TotalPorTipoIva[];
-}
+};
 
+// Productos
 export const productos: LineaTicket[] = [
   {
     producto: {
