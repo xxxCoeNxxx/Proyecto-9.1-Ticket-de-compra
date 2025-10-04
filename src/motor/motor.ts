@@ -1,5 +1,4 @@
-import { LineaTicket, TipoIva } from "../modelo/model.js";
-import { muestraTicket } from "../ui/ui.js";
+import { LineaTicket, TipoIva, ResultadoLineaTicket, ResultadoTotalTicket } from "../modelo/model.js";
 
 // Devuelve el valor base del IVA
 const valorIVA = (tipoIva: TipoIva): number => {
@@ -17,12 +16,45 @@ const precioConIVA = (precio: number, tipoIva: TipoIva): number => {
     return parseFloat((precio * (1 + valorIVA(tipoIva))).toFixed(2));
 };
 
-export const calculaTicket = (lineasTicket: LineaTicket[]) => {
-    const ticketString = lineasTicket.reduce((acc, linea)  => {
-        const precioSinIva = linea.producto.precio  * linea.cantidad;
+export const resulLineaTicket = (lineasTicket: LineaTicket[]): ResultadoLineaTicket[] => {
+    return lineasTicket.map((linea): ResultadoLineaTicket => {
+        const precioSinIva = linea.producto.precio * linea.cantidad;
         const precioFinal = precioConIVA(linea.producto.precio, linea.producto.tipoIva) * linea.cantidad;
-        return ( acc + `${linea.producto.nombre} x ${linea.cantidad} - ${precioSinIva.toFixed(2)}€ - ${linea.producto.tipoIva} - ${precioFinal.toFixed(2)}€<br/>`);
-    }, "");
-    muestraTicket(ticketString);
+
+        return{
+            nombre: linea.producto.nombre,
+            cantidad: linea.cantidad,
+            precionSinIva: parseFloat(precioSinIva.toFixed(2)),
+            tipoIva: linea.producto.tipoIva,
+            precioConIva: parseFloat(precioFinal.toFixed(2))
+        };
+    });
+};
+
+export const resulTotalTicket = (resulLineaTicket: ResultadoLineaTicket[]): ResultadoTotalTicket => {
+    const totalSinIva = resulLineaTicket.reduce((acc, linea) => acc + linea.precionSinIva, 0);
+    const totalConIva = resulLineaTicket.reduce((acc, linea) => acc + linea.precioConIva, 0);
+    const totalIva = totalConIva - totalSinIva;
+
+    return{
+        totalSinIva: parseFloat(totalSinIva.toFixed(2)),
+        totalConIva: parseFloat(totalConIva.toFixed(2)),
+        totalIva: parseFloat(totalIva.toFixed(2))
+    };
 }
 
+export const totalesPorTipoIva = (lineas: ResultadoLineaTicket[]): Map<TipoIva, number> => {
+  const mapa = new Map<TipoIva, number>();
+
+  lineas.forEach((linea) => {
+    const ivaLinea = linea.precioConIva - linea.precionSinIva;
+
+    if (mapa.has(linea.tipoIva)) {
+      mapa.set(linea.tipoIva, mapa.get(linea.tipoIva)! + ivaLinea);
+    } else {
+      mapa.set(linea.tipoIva, ivaLinea);
+    }
+  });
+
+  return mapa;
+};

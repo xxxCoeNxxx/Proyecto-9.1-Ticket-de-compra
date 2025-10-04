@@ -30,13 +30,13 @@ export interface ResultadoLineaTicket {
 };
 
 // Totales del ticket
-interface ResultadoTotalTicket {
+export interface ResultadoTotalTicket {
   totalSinIva: number;
   totalConIva: number;
   totalIva: number;
 };
 
-interface TotalPorTipoIva {
+export interface TotalPorTipoIva {
   tipoIva: TipoIva;
   cuantia : number;
 };
