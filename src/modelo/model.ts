@@ -81,4 +81,20 @@ export const productos: LineaTicket[] = [
     },
     cantidad: 1,
   },
+    {
+    producto: {
+      nombre: "Macarrones",
+      precio: 3,
+      tipoIva: "superreducidoA",
+    },
+    cantidad: 2,
+  },
+  {
+    producto: {
+      nombre: "Revista",
+      precio: 3,
+      tipoIva: "reducido",
+    },
+    cantidad: 2,
+  },
 ];

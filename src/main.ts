@@ -1,12 +1,10 @@
 import "./style.css";
 import { productos } from "./modelo/model";
-import { resulLineaTicket, resulTotalTicket, totalesPorTipoIva} from "./motor/motor";
-import { muestraTicket, muestraTotales, muestraTicketIva } from "./ui/ui";
+import { generarTicketFinal} from "./motor/motor";
+import { mostrarTicketFinal } from "./ui/ui";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const lineas = resulLineaTicket(productos);
-    const totales = totalesPorTipoIva(lineas);
-    muestraTicket(resulLineaTicket(productos));
-    muestraTicketIva(totales, "desglose");
-    muestraTotales(resulTotalTicket(resulLineaTicket(productos)));
+    const TicketFinal = generarTicketFinal(productos);
+    mostrarTicketFinal(TicketFinal);
 });
+
